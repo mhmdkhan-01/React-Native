@@ -1,23 +1,24 @@
-var schedules=[
-    Schedule(
+import Schedule from '../Models/Schedule'
+var Schedules=[
+   new Schedule(
      "BSCS - 3A",
      "Programming Fundamentals",
      "Monday",
      "08:30 AM - 09:30 AM",
   ),
-  Schedule(
+   new Schedule(
      "BSIT - 1B",
      "Mobile Application Development",
      "Monday",
      "10:30 AM - 11:30 AM",
   ),
-  Schedule(
+   new Schedule(
      "BSCS - 5A",
      "Database Systems",
      "Tuesday",
      "12:30 PM - 01:30 PM",
   ),
-  Schedule(
+   new Schedule(
      "BSIT - 2A",
      "Object Oriented Programming",
      "Wednesday",
@@ -25,3 +26,4 @@ var schedules=[
   ),
 
 ];
+export default Schedules;

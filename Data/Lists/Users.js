@@ -1,4 +1,3 @@
-
 import AppUser from '../Models/AppUser'
 var appUsersList=[
     new AppUser('ali', 'xyz'),
