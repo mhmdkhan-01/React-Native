@@ -1,29 +1,32 @@
-import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity } from 'react-native'
+import { View, Text, StyleSheet, Image, ImageBackground, TouchableOpacity, Pressable } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import Feather from 'react-native-vector-icons/Feather'
 import React from 'react'
 import Schedules from '../Data/Lists/Schedules'
 
-const Dashboard = () => {
+const Dashboard = ({navigation}) => {
     const quickicons=[{
         title:'Add Course',
         subtitle:'Create New Course (Subject)',
         color:'#d8fff3',
         arrowColor:'#00b07c',
-        img:require('../Images/addcourse.png')
+        img:require('../Images/addcourse.png'),
+        screen:'AddCourse'
     },{
         title:'Add Class',
         subtitle:'Create a class for a course',
         color:'#c7ebff',
         arrowColor:'#0078b8',
-        img:require('../Images/addclass.png')        
+        img:require('../Images/addclass.png'),
+        screen:'AddClass'        
     },{ 
         title:'Add Schedule',
         subtitle:'Set class timing and assign subject',
         color:'#fae9c8',
         arrowColor:'#cc8800',
-        img:require('../Images/addschedule.png') 
+        img:require('../Images/addschedule.png') ,
+        screen:'AddSchedule'
     }];
 
   return (
@@ -49,7 +52,8 @@ const Dashboard = () => {
         </View>
         <View style={style.quickbuttons}>
             {quickicons.map((item, index) => {
-                return <View key={index} style={{backgroundColor:item.color, margin:5, borderRadius:8,
+                return <Pressable  key={index} onPress={()=>navigation.navigate(item.screen)}
+                 style={{backgroundColor:item.color, margin:5, borderRadius:8,
                     width:'31%', alignItems:'center', padding:5
                 }}>
                     <Image source={item.img}
@@ -60,7 +64,8 @@ const Dashboard = () => {
                 <View style={{backgroundColor:item.arrowColor, marginTop:5, borderRadius:50}}>
                     <MaterialIcons color="white" name="keyboard-arrow-right" size={25}/>
                 </View>
-                </View>
+                
+                </Pressable>
             })}
         </View>
         <View style={style.lsheader}>
@@ -91,7 +96,7 @@ const Dashboard = () => {
                         <View style={style.subjectSection}>
                             <MaterialIcons name="menu-book" size={18} color="#6C5CE7" style={style.sectionIcon} />
                             <Text style={style.cardTitleText} numberOfLines={2}>
-                                {item.subject || 'Programming\nFundamentals'}
+                                {item.subjectName || 'Programming\nFundamentals'}
                             </Text>
                             <Text style={style.cardSubtitleText}>Subject</Text>
                         </View>
