@@ -1,9 +1,8 @@
 import Class from "../Models/Class";
 var classes=[
-  Class("Programming Fundamentals", "CS", "3", "A"),
-  Class( "Mobile Application Development", "IT",  "1",  "B"),
-  Class( "Database Systems",  "CS", "5",  "A"),
-  Class( "Object Oriented Programming", "IT",  "2",  "A"),
+  new Class("Programming Fundamentals", "CS", "3", "A"),
+  new Class( "Database Systems",  "CS", "5",  "A"),
+  new Class( "Object Oriented Programming", "IT",  "2",  "A"),
 ];
 
 export function getClasses()
