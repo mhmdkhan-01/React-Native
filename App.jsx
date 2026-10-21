@@ -6,6 +6,7 @@ import Login from './Screens/Login'
 import Dashboard from './Screens/Dashboard'
 import AddCourse from './Screens/AddCourse';
 import AddClass from './Screens/AddClass';
+import AddSchedule from './Screens/AddSchedule'
 const App = () => {
   const Stack=createNativeStackNavigator();
   return (
@@ -15,6 +16,7 @@ const App = () => {
         <Stack.Screen name='Dashboard' component={Dashboard} options={{headerShown:false}}/>
         <Stack.Screen name="AddCourse" component={AddCourse}/>
         <Stack.Screen name="AddClass" component={AddClass}/>
+        <Stack.Screen name="AddSchedule" component={AddSchedule}/>
       </Stack.Navigator>
     </NavigationContainer>
   )
