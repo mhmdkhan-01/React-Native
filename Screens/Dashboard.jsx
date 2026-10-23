@@ -128,7 +128,6 @@ const Dashboard = ({ navigation }) => {
         {Schedules.map((item, index) => {
           return (
             <View key={index} style={style.card}>
-              {/* Class Section */}
               <View style={style.classSection}>
                 <View style={style.iconCircle}>
                   <MaterialIcons name="groups" size={20} color="#6C5CE7" />
@@ -143,7 +142,6 @@ const Dashboard = ({ navigation }) => {
 
               <View style={style.divider} />
 
-              {/* Subject Section */}
               <View style={style.subjectSection}>
                 <MaterialIcons
                   name="menu-book"
@@ -177,7 +175,9 @@ const Dashboard = ({ navigation }) => {
               <Pressable
                 style={style.cardButton}
                 onPress={() => {
-                  navigation.navigate('MarkAttendance');
+                  navigation.navigate('MarkAttendance', {
+                    todaysClasses: item,
+                  });
                 }}
               >
                 <Text style={style.cardButtonText}>Mark{'\n'}Attendance</Text>
