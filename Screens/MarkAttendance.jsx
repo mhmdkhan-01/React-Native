@@ -6,18 +6,24 @@ import {
   StyleSheet,
   Alert,
   FlatList,
+  Modal,
+  TextInput,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { getStudents, markatt } from '../Data/Lists/Students';
+import { addStudent, getStudents, markatt } from '../Data/Lists/Students';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 const MarkAttendanceScreen = ({ navigation, route }) => {
   const { todaysClasses } = route.params || {};
   const [students, setStudents] = useState([]);
   const [totalpresents, setTotPres] = useState();
   const [totalAbsents, setTotAbs] = useState();
   const [refresh, setRefresh] = useState('A');
+  const [showModal, setShowModal] = useState(false);
+  const [stdRegno, setStdRegNo] = useState('');
+  const [stdName, setStdName] = useState('');
   useEffect(() => {
     let ss = getStudents();
     setStudents(ss);
@@ -29,6 +35,15 @@ const MarkAttendanceScreen = ({ navigation, route }) => {
   const toggleAttendance = index => {
     markatt(index);
     setRefresh(refresh == 'A' ? 'B' : 'A');
+  };
+  const clearinps = () => {
+    setStdName('');
+    setStdRegNo('');
+  };
+
+  const addToList = () => {
+    addStudent(stdRegno, stdName);
+    clearinps();
   };
   const showData = ({ item, index }) => {
     return (
@@ -59,7 +74,7 @@ const MarkAttendanceScreen = ({ navigation, route }) => {
     );
   };
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1, position: 'relative' }}>
       <View style={style.header}>
         <View style={style.lheader}>
           <Pressable onPress={() => navigation.goBack()}>
@@ -131,6 +146,74 @@ const MarkAttendanceScreen = ({ navigation, route }) => {
 
         <FlatList data={students} renderItem={showData} />
       </View>
+      <Pressable onPress={() => setShowModal(true)}>
+        <View style={style.addiconcontainer}>
+          <MaterialIcons name="add" size={22} color="white" />
+        </View>
+      </Pressable>
+      <Modal visible={showModal} style={style.addstdpopup}>
+        <Pressable onPress={() => setShowModal(false)}>
+          <View style={{ alignSelf: 'flex-end' }}>
+            <MaterialIcons name="close" color="gray" size={20} />
+          </View>
+        </Pressable>
+        <View style={[style.popupdetailsContainer]}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={[style.iconContainer, { backgroundColor: '#c7e4ff' }]}>
+              <MaterialIcons name="person-add" color={'#369eff'} size={18} />
+            </View>
+            <View>
+              <Text style={style.detailscontheadingtxt}>Add Student</Text>
+              <Text
+                style={[style.detailscontsubtxt, { width: 200 }]}
+              >{`Enter Student Registration Number and name to add to this class`}</Text>
+            </View>
+          </View>
+        </View>
+
+        <View style={style.inputcontainer}>
+          <View style={style.inpheader}>
+            <Text style={style.inplabelhdr}>Registration Number</Text>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>*</Text>
+          </View>
+          <View style={style.inpbox}>
+            <FontAwesome5 name="id-card" size={20} color="gray" />
+            <TextInput
+              style={{ width: '100%' }}
+              placeholder="Enter registration number"
+              value={stdRegno}
+              onChangeText={setStdRegNo}
+            />
+          </View>
+          <Text style={{ fontSize: 12, color: 'gray' }}>e.g 2024-CS-0001</Text>
+        </View>
+        <View style={style.inputcontainer}>
+          <View style={style.inpheader}>
+            <Text style={style.inplabelhdr}>Student Name</Text>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>*</Text>
+          </View>
+          <View style={style.inpbox}>
+            <Feather name="user" size={20} color="gray" />
+            <TextInput
+              style={{ width: '100%' }}
+              placeholder="Enter student name "
+              value={stdName}
+              onChangeText={setStdName}
+            />
+          </View>
+          <Text style={{ fontSize: 12, color: 'gray' }}>e.g Ali Raza</Text>
+        </View>
+        <View style={style.buttons}>
+          <Pressable style={style.button} onPress={clearinps}>
+            <MaterialIcons name="refresh" size={20} color="#0066FF" />
+            <Text style={[style.btntxt, style.clrbtntxt]}>Clear</Text>
+          </Pressable>
+          <Pressable style={[style.button, style.addbtn]} onPress={addToList}>
+            <MaterialIcons name="add" size={20} color="white" />
+            <Text style={[style.btntxt, style.addbtntxt]}>Add to List</Text>
+          </Pressable>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };
@@ -293,6 +376,81 @@ const style = StyleSheet.create({
     shadowOpacity: 0.05,
     shadowRadius: 4,
     elevation: 2,
+  },
+  popupdetailsContainer: {
+    backgroundColor: 'white',
+    flexDirection: 'row',
+    paddingHorizontal: 5,
+    paddingVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    borderRadius: 5,
+  },
+  addiconcontainer: {
+    height: 50,
+    width: 50,
+    borderRadius: 20,
+    backgroundColor: '#0055d5',
+    justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    right: 5,
+    bottom: 20,
+  },
+  addstdpopup: {
+    backgroundColor: 'white',
+    marginVertical: 150,
+    paddingHorizontal: 20,
+    paddingTop: 5,
+  },
+  inputcontainer: {
+    marginTop: 25,
+  },
+  inpheader: {
+    flexDirection: 'row',
+    gap: 5,
+  },
+  inplabelhdr: {
+    fontWeight: 'bold',
+    fontSize: 15,
+  },
+  inpbox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    borderWidth: 1,
+    borderRadius: 8,
+    borderColor: 'lightgray',
+    padding: 5,
+    paddingLeft: 10,
+    marginTop: 10,
+    gap: 10,
+  },
+  buttons: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  button: {
+    flexDirection: 'row',
+    borderRadius: 8,
+    alignItems: 'center',
+    justifyContent: 'center',
+    width: '48%',
+    padding: 10,
+    borderWidth: 1,
+    borderColor: '#0066ff',
+    marginVertical: 20,
+  },
+  btntxt: {
+    fontWeight: 'bold',
+  },
+  clrbtntxt: {
+    color: '#0066ff',
+  },
+  addbtn: {
+    backgroundColor: '#0066ff',
+  },
+  addbtntxt: {
+    color: 'white',
   },
 });
 
